@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Android Early Access — Crowdora</title>
+<meta name="description" content="Join the Crowdora Android closed test.">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0D1117;
+    color: #C9D1D9;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: 24px;
+    line-height: 1.6;
+  }
+  .card {
+    width: 100%;
+    max-width: 440px;
+    background: #161B22;
+    border: 1px solid #30363D;
+    border-radius: 16px;
+    padding: 34px 28px;
+  }
+  .badge {
+    display: inline-block;
+    background: #0C2D6B;
+    border: 1px solid #2F81F7;
+    color: #2F81F7;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 4px 11px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  h1 { color: #fff; font-size: 24px; margin: 0 0 10px; letter-spacing: -0.3px; }
+  .sub { color: #8B949E; font-size: 15px; margin: 0 0 26px; }
+  label { display: block; color: #8B949E; font-size: 13px; margin-bottom: 7px; }
+  input[type="email"] {
+    width: 100%;
+    background: #0D1117;
+    border: 1px solid #30363D;
+    border-radius: 12px;
+    padding: 14px;
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  input[type="email"]:focus { outline: none; border-color: #2F81F7; }
+  .hint { color: #484F58; font-size: 12px; margin: 0 0 18px; }
+  button {
+    width: 100%;
+    background: #2F81F7;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .msg { border-radius: 10px; padding: 14px; font-size: 14px; margin-bottom: 18px; display: none; }
+  .msg.err { background: #2D1215; border: 1px solid #F85149; color: #F85149; }
+  .msg.ok  { background: #0D2818; border: 1px solid #3FB950; color: #3FB950; }
+  .steps {
+    background: #0D1117;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 22px 0 0;
+    font-size: 13px;
+    color: #8B949E;
+  }
+  .steps strong { color: #C9D1D9; display: block; margin-bottom: 8px; font-size: 13px; }
+  .steps ol { margin: 0; padding-left: 18px; }
+  .steps li { margin-bottom: 5px; }
+  .privacy { color: #484F58; font-size: 11px; margin-top: 20px; }
+  .links { margin-top: 22px; text-align: center; }
+  a { color: #2F81F7; text-decoration: none; font-size: 13px; }
+  a:hover { text-decoration: underline; }
+  .ios-note {
+    background: #0D1117;
+    border-left: 3px solid #3FB950;
+    border-radius: 0 10px 10px 0;
+    padding: 12px 14px;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #8B949E;
+  }
+  /* bot tuzağı — insanlar görmez */
+  .hp { position: absolute; left: -9999px; opacity: 0; height: 0; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="badge">ANDROID</div>
+  <h1>Get early access</h1>
+  <p class="sub">Crowdora is in closed testing on Google Play. Leave your email and we'll send you an invite.</p>
+
+  <div id="msg" class="msg"></div>
+
+  <div id="form">
+    <label for="email">Your Google account email</label>
+    <input id="email" type="email" inputmode="email" autocomplete="email"
+           placeholder="you@gmail.com">
+    <p class="hint">Must be a Google account — Play Store closed testing requires it.</p>
+
+    <input class="hp" type="text" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <button id="btn">Request access</button>
+  </div>
+
+  <div class="steps">
+    <strong>What happens next</strong>
+    <ol>
+      <li>We add your email to the test group</li>
+      <li>You get an invite link from destek@crowdora.app, usually within 24 hours</li>
+      <li>Tap the link, become a tester, install from Play Store</li>
+    </ol>
+  </div>
+
+  <div class="ios-note">
+    On iPhone? Crowdora is already available on the App Store.
+  </div>
+
+  <p class="privacy">
+    Your email is used only to send you the test invite. It is not used for marketing
+    and is deleted once the app is publicly released. See our
+    <a href="privacy.html">Privacy Policy</a>.
+  </p>
+
+  <div class="links">
+    <a href="index.html">&larr; Back to Crowdora</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://htawoemgeqakmttzanhl.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0YXdvZW1nZXFha210dHphbmhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1NDgzNDcsImV4cCI6MjEwMjEyNDM0N30.Uvw_Y9hmrifSGZLmwtzLId9cP_LA_sthbOriRjIvU0o';
+
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  const msg = document.getElementById('msg');
+  const form = document.getElementById('form');
+  const btn = document.getElementById('btn');
+  const input = document.getElementById('email');
+  const honeypot = document.getElementById('website');
+
+  function show(text, kind) {
+    msg.textContent = text;
+    msg.className = 'msg ' + kind;
+    msg.style.display = 'block';
+  }
+
+  async function submit() {
+    // Bot tuzağı dolduysa sessizce başarılı göster
+    if (honeypot.value) {
+      show("You're on the list. Watch your inbox for the invite.", 'ok');
+      form.style.display = 'none';
+      return;
+    }
+
+    const email = input.value.trim();
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      show('Please enter a valid email address.', 'err');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    const { error } = await sb.rpc('join_android_waitlist', { p_email: email });
+
+    btn.disabled = false;
+    btn.textContent = 'Request access';
+
+    if (error) {
+      const m = String(error.message || '');
+      show(
+        m.includes('GECERSIZ_EPOSTA') ? 'Please enter a valid email address.'
+        : m.includes('COK_HIZLI') ? 'Too many requests right now. Please try again in a few minutes.'
+        : 'Something went wrong. Please email destek@crowdora.app instead.',
+        'err'
+      );
+      return;
+    }
+
+    show("You're on the list. We'll email you an invite within 24 hours.", 'ok');
+    form.style.display = 'none';
+  }
+
+  btn.addEventListener('click', submit);
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
+</script>
+</body>
+</html>
