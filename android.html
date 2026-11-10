@@ -93,6 +93,12 @@
     font-size: 13px;
     color: #8B949E;
   }
+  .next { display: none; background: #0D1117; border: 1px solid #3FB950; border-radius: 12px; padding: 16px 18px; margin-bottom: 18px; font-size: 14px; }
+  .next strong { color: #3FB950; display: block; margin-bottom: 8px; }
+  .next ol { margin: 0 0 10px; padding-left: 18px; }
+  .next li { margin-bottom: 8px; }
+  .next a { font-size: 14px; font-weight: 600; }
+  .next .small { color: #8B949E; font-size: 12px; margin: 0; }
   /* bot tuzağı — insanlar görmez */
   .hp { position: absolute; left: -9999px; opacity: 0; height: 0; }
 </style>
@@ -101,9 +107,19 @@
 <div class="card">
   <div class="badge">ANDROID</div>
   <h1>Get early access</h1>
-  <p class="sub">Crowdora is in closed testing on Google Play. Leave your email and we'll send you an invite. We add testers in batches.</p>
+  <p class="sub">Crowdora is in closed testing on Google Play. Leave your email and we'll send you an invite right away.</p>
 
   <div id="msg" class="msg"></div>
+
+  <div id="next" class="next">
+    <strong>You're on the list! Three steps, about 2 minutes:</strong>
+    <ol>
+      <li>Join the tester group:<br><a href="https://groups.google.com/g/crowdora-testers/about" target="_blank" rel="noopener">groups.google.com/g/crowdora-testers</a></li>
+      <li>Opt in on Google Play:<br><a href="https://play.google.com/apps/testing/com.dzdsamet.crowdora" target="_blank" rel="noopener">Become a tester</a></li>
+      <li>Install Crowdora from Google Play:<br><a href="https://play.google.com/store/apps/details?id=com.dzdsamet.crowdora" target="_blank" rel="noopener">Open Google Play</a></li>
+    </ol>
+    <p class="small">Use the same Google account you use on your Android phone. If step 3 says the app isn't available, wait a few minutes after step 2 and try again. We also emailed you these links from destek@crowdora.app.</p>
+  </div>
 
   <div id="form">
     <label for="email">Your Google account email</label>
@@ -111,7 +127,7 @@
            placeholder="you@gmail.com">
     <p class="hint">Must be a Google account — Play Store closed testing requires it.</p>
 
-    <input class="hp" type="text" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <input class="hp" type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
 
     <button id="btn">Request access</button>
   </div>
@@ -119,9 +135,9 @@
   <div class="steps">
     <strong>What happens next</strong>
     <ol>
-      <li>We add your email to the test group</li>
-      <li>You get an invite link from destek@crowdora.app, usually within a couple of days</li>
-      <li>Tap the link, become a tester, install from Play Store</li>
+      <li>You get an invite email from destek@crowdora.app within minutes</li>
+      <li>Join the tester group and become a tester on Google Play</li>
+      <li>Install Crowdora from the Play Store</li>
     </ol>
   </div>
 
@@ -152,6 +168,7 @@
   const btn = document.getElementById('btn');
   const input = document.getElementById('email');
   const honeypot = document.getElementById('website');
+  const next = document.getElementById('next');
 
   function show(text, kind) {
     msg.textContent = text;
@@ -159,11 +176,17 @@
     msg.style.display = 'block';
   }
 
+  // Başarı: üç adımı linkleriyle göster (e-posta spam'e düşse bile kişi linkleri görsün)
+  function done() {
+    msg.style.display = 'none';
+    form.style.display = 'none';
+    next.style.display = 'block';
+  }
+
   async function submit() {
-    // Bot tuzağı dolduysa sessizce başarılı göster
+    // Bot tuzağı dolduysa kayıt göndermeden sessizce başarılı göster
     if (honeypot.value) {
-      show("You're on the list. Watch your inbox for the invite.", 'ok');
-      form.style.display = 'none';
+      done();
       return;
     }
 
@@ -193,8 +216,7 @@
       return;
     }
 
-    show("You're on the list. We'll send your invite soon.", 'ok');
-    form.style.display = 'none';
+    done();
   }
 
   btn.addEventListener('click', submit);
